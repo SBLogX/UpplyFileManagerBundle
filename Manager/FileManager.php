@@ -94,7 +94,7 @@ class FileManager
      */
     public function hasNamespace(string $namespace)
     {
-        return isset($this->upplyDirNames[$namespace]);
+        return isset($this->upplyDirNames[$namespace]['name']);
     }
 
     /**
@@ -110,7 +110,7 @@ class FileManager
             throw new \UnexpectedValueException(sprintf('Undefined file namespace: \'%s\'', $namespace));
         }
 
-        return $this->upplyDirNames[$namespace];
+        return $this->upplyDirNames[$namespace]['name'];
     }
 
     /**
