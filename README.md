@@ -34,6 +34,4 @@ Configure the `upply_file_manager.yaml` in your `config/package` directory:
 ```yaml
 upply_file_manager:
     blob_storage_url: '%env(BLOB_STORAGE_URL)%'
-    storage_dirnames:
-        client: '%env(CLIENT_STORAGE_DIR_NAME)%'
 ```

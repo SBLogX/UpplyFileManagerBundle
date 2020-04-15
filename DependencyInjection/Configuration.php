@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('blob_storage_url')->isRequired()->cannotBeEmpty()->end()
                 ->arrayNode('storage_dirnames')
+                    ->useAttributeAsKey('_name')
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('client')->isRequired()->cannotBeEmpty()->defaultValue('client-files')->end()
