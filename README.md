@@ -51,3 +51,26 @@ knp_gaufrette:
 
     stream_wrapper: ~
 ```
+
+How to use
+----------
+
+Define a relative path that will be use to store/retrieve/delete your file from a namespace (here: 'client')
+```php
+$relativeFilePath = sprintf(
+    'company-%d/order-documents/order-%s/%s',
+    $this->getUser()->getCompanyId(),
+    $order->getReference(),
+    $documentReference
+);
+
+$fileManager->has('client', $relativeFilePath);
+$fileManager->write('client', $relativeFilePath, file_get_contents($document->getRealPath()));
+$fileManager->get('client', $relativeFilePath);
+$fileManager->delete('client', $relativeFilePath);
+```
+
+In a controller, to return the file:
+```php
+return new BinaryFileResponse($fileManager->getFilePath('client', $relativeFilePath, true));
+```
