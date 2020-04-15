@@ -1,0 +1,12 @@
+services:
+
+    Upply\FileManagerBundle\Manager\FileManager:
+        arguments:
+            $filesystemName: 'upply'
+            $upplyDirNames: '%upply_file_manager.storage_dirnames%'
+
+    # Azure Blob
+    azure_blob_proxy_factory:
+        class: Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory
+        arguments:
+            - '%upply_file_manager.blob_storage_url%'

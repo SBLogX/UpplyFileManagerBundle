@@ -1,0 +1,35 @@
+{
+    "name": "upply/file-manager-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony bundle to easily handle file storage in a standard way",
+    "keywords": ["file", "gaufrette", "azure"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel BONDAZ",
+            "email": "gabriel.bondaz.ext@upply.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "ext-intl": "*",
+        "symfony/dependency-injection": "^4.0",
+        "symfony/framework-bundle": "^4.0",
+        "symfony/validator": "^4.0",
+        "knplabs/knp-gaufrette-bundle": "^0.7.1",
+        "microsoft/windowsazure": "^0.5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Upply\\FileManagerBundle\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Upply\\FileManagerBundle\\Tests\\": "Tests"
+        }
+    }
+}
