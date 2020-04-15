@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('_name')
                     ->arrayPrototype()
                         ->children()
-                            ->scalarNode('client')->isRequired()->cannotBeEmpty()->defaultValue('client-files')->end()
+                            ->scalarNode('name')->isRequired()->cannotBeEmpty()->end()
                         ->end()
                     ->end()
                 ->end()
