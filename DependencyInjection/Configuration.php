@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('storage_dirnames')
                     ->arrayPrototype()
                         ->children()
-                            ->scalarNode('client')->isRequired()->cannotBeEmpty()->default('client-files')->end()
+                            ->scalarNode('client')->isRequired()->cannotBeEmpty()->defaultValue('client-files')->end()
                         ->end()
                     ->end()
                 ->end()
