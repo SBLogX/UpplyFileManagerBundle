@@ -30,7 +30,7 @@ $ composer update
 
 Configuration
 -------------
-Configure the `upply_file_manager.yaml` in your `config/package` directory:
+Configure the `upply_file_manager.yaml` in your `config/packages` directory:
 ```yaml
 upply_file_manager:
     blob_storage_url: '%env(BLOB_STORAGE_URL)%'
@@ -50,6 +50,24 @@ knp_gaufrette:
                 create_container: false
 
     stream_wrapper: ~
+```
+
+To choose which adapter to use add this under `knp_gaufrette` configuration:
+
+To use azure
+```yaml
+    filesystems:
+        upply:
+            adapter: azure
+            alias: upply_filesystem
+```
+
+To use default
+```yaml
+    filesystems:
+        upply:
+            adapter: default
+            alias: upply_filesystem
 ```
 
 How to use
