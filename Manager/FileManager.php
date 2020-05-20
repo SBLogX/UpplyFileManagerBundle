@@ -75,6 +75,7 @@ class FileManager
                     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                     'application/octet-stream',
                     'text/csv',
+                    'multipart/form-data',
                 ],
                 'maxSize' => '5M',
             ]),
