@@ -17,7 +17,7 @@
         "symfony/framework-bundle": "^4.0",
         "symfony/validator": "^4.0",
         "knplabs/knp-gaufrette-bundle": "^0.7.1",
-        "microsoft/windowsazure": "dev-master"
+        "microsoft/windowsazure": "dev-php71"
     },
     "autoload": {
         "psr-4": {
