@@ -10,9 +10,16 @@ declare(strict_types=1);
 
 namespace Upply\FileManagerBundle\Manager;
 
+use Gaufrette\Exception\FileNotFound;
+use Gaufrette\File;
+use Gaufrette\Filesystem;
+use InvalidArgumentException;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Transliterator;
+use UnexpectedValueException;
 
 class FileManager
 {
@@ -59,9 +66,9 @@ class FileManager
      *
      * @param $file
      *
-     * @return Symfony\Component\Validator\ConstraintViolationList
+     * @return ConstraintViolationListInterface
      */
-    public function validate($file)
+    public function validate($file): ConstraintViolationListInterface
     {
         return $this->validator->validate($file, [
             new Constraints\NotBlank(),
@@ -85,9 +92,9 @@ class FileManager
     /**
      * Returns upply filesystem.
      *
-     * @return Gaufrette\Filesystem
+     * @return Filesystem
      */
-    public function getFilesystem()
+    public function getFilesystem(): Filesystem
     {
         return $this->filesystemMap->get($this->filesystemName);
     }
@@ -99,7 +106,7 @@ class FileManager
      *
      * @return bool
      */
-    public function hasNamespace(string $namespace)
+    public function hasNamespace(string $namespace): bool
     {
         return isset($this->upplyDirNames[$namespace]['name']);
     }
@@ -111,10 +118,10 @@ class FileManager
      *
      * @return string
      */
-    public function getNamespacePath(string $namespace)
+    public function getNamespacePath(string $namespace): string
     {
         if (!$this->hasNamespace($namespace)) {
-            throw new \UnexpectedValueException(sprintf('Undefined file namespace: \'%s\'', $namespace));
+            throw new UnexpectedValueException(sprintf('Undefined file namespace: \'%s\'', $namespace));
         }
 
         return $this->upplyDirNames[$namespace]['name'];
@@ -129,7 +136,7 @@ class FileManager
      *
      * @return string
      */
-    public function getFilePath(string $namespace, string $key, bool $stream = false)
+    public function getFilePath(string $namespace, string $key, bool $stream = false): string
     {
         if ($stream) {
             return sprintf('gaufrette://%s/%s', $this->filesystemName, $this->getFilePath($namespace, $key));
@@ -157,10 +164,10 @@ class FileManager
      * @param string $namespace
      * @param string $key
      *
-     * @throws Exception\FileNotFound
-     * @throws \InvalidArgumentException If $key is invalid
+     * @throws FileNotFound
+     * @throws InvalidArgumentException If $key is invalid
      *
-     * @return File
+     * @return File|mixed
      */
     public function get(string $namespace, string $key)
     {
@@ -189,7 +196,7 @@ class FileManager
      *
      * @return bool
      */
-    public function has(string $namespace, string $key)
+    public function has(string $namespace, string $key): bool
     {
         return $this->getFilesystem()->has($this->getFilePath($namespace, $key));
     }
@@ -202,7 +209,7 @@ class FileManager
      *
      * @return bool
      */
-    public function delete(string $namespace, string $key)
+    public function delete(string $namespace, string $key): bool
     {
         return $this->getFilesystem()->delete($this->getFilePath($namespace, $key));
     }
@@ -215,10 +222,10 @@ class FileManager
      *
      * @return string
      */
-    public static function slugify(string $string, $delimiter = '-')
+    public static function slugify(string $string, $delimiter = '-'): string
     {
-        $clean = \Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($string);
-        $clean = preg_replace("/[^a-zA-Z0-9 \._-]/", '', $clean);
+        $clean = Transliterator::create('NFD; [:Nonspacing Mark:] Remove; NFC')->transliterate($string);
+        $clean = preg_replace("/[^a-zA-Z0-9 ._-]/", '', $clean);
         $clean = mb_strtolower($clean);
         $clean = preg_replace('/[ ]+/', $delimiter, $clean);
 
