@@ -12,9 +12,8 @@ namespace Upply\FileManagerBundle\Manager;
 
 use Gaufrette\Exception\FileNotFound;
 use Gaufrette\File;
-use Gaufrette\Filesystem;
+use Gaufrette\FilesystemInterface;
 use InvalidArgumentException;
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,35 +28,22 @@ class FileManager
     private $validator;
 
     /**
-     * @var FilesystemMap
+     * @var FilesystemInterface
      */
-    private $filesystemMap;
-
-    /**
-     * @var string
-     */
-    private $filesystemName;
+    private $filesystem;
 
     /**
      * @var array
      */
     private $upplyDirNames;
 
-    /**
-     * @param ValidatorInterface $validator
-     * @param FilesystemMap      $filesystemMap
-     * @param array              $upplyDirNames
-     * @param string             $filesystemName
-     */
     public function __construct(
         ValidatorInterface $validator,
-        FilesystemMap $filesystemMap,
-        string $filesystemName,
+        FilesystemInterface $filesystem,
         array $upplyDirNames
     ) {
         $this->validator = $validator;
-        $this->filesystemMap = $filesystemMap;
-        $this->filesystemName = $filesystemName;
+        $this->filesystem = $filesystem;
         $this->upplyDirNames = $upplyDirNames;
     }
 
@@ -87,16 +73,6 @@ class FileManager
                 'maxSize' => '5M',
             ]),
         ]);
-    }
-
-    /**
-     * Returns upply filesystem.
-     *
-     * @return Filesystem
-     */
-    public function getFilesystem(): Filesystem
-    {
-        return $this->filesystemMap->get($this->filesystemName);
     }
 
     /**
@@ -132,17 +108,25 @@ class FileManager
      *
      * @param string $namespace
      * @param string $key
-     * @param bool   $stream
      *
      * @return string
      */
-    public function getFilePath(string $namespace, string $key, bool $stream = false): string
+    public function getFilePath(string $namespace, string $key): string
     {
-        if ($stream) {
-            return sprintf('gaufrette://%s/%s', $this->filesystemName, $this->getFilePath($namespace, $key));
-        }
-
         return sprintf('%s/%s', $this->getNamespacePath($namespace), $key);
+    }
+
+    /**
+     * Returns the file stream path.
+     *
+     * @param string $namespace
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getFileStreamPath(string $namespace, string $key): string
+    {
+        return sprintf('gaufrette://upply/%s', $this->getFilePath($namespace, $key));
     }
 
     /**
@@ -153,9 +137,9 @@ class FileManager
      *
      * @return string|bool if cannot read content
      */
-    public function read(string $namespace, string $key)
+    public function read(string $namespace, string $key): string
     {
-        return $this->getFilesystem()->read($this->getFilePath($namespace, $key));
+        return $this->filesystem->read($this->getFilePath($namespace, $key));
     }
 
     /**
@@ -169,9 +153,9 @@ class FileManager
      *
      * @return File|mixed
      */
-    public function get(string $namespace, string $key)
+    public function get(string $namespace, string $key): File
     {
-        return $this->getFilesystem()->get($this->getFilePath($namespace, $key));
+        return $this->filesystem->get($this->getFilePath($namespace, $key));
     }
 
     /**
@@ -180,12 +164,13 @@ class FileManager
      * @param string $namespace
      * @param string $key
      * @param string $content
+     * @param bool   $override
      *
      * @return int|bool The number of bytes that were written into the file
      */
-    public function write(string $namespace, string $key, string $content)
+    public function write(string $namespace, string $key, string $content, bool $override = false): int
     {
-        return $this->getFilesystem()->write($this->getFilePath($namespace, $key), $content);
+        return $this->filesystem->write($this->getFilePath($namespace, $key), $content, $override);
     }
 
     /**
@@ -198,7 +183,7 @@ class FileManager
      */
     public function has(string $namespace, string $key): bool
     {
-        return $this->getFilesystem()->has($this->getFilePath($namespace, $key));
+        return $this->filesystem->has($this->getFilePath($namespace, $key));
     }
 
     /**
@@ -211,7 +196,7 @@ class FileManager
      */
     public function delete(string $namespace, string $key): bool
     {
-        return $this->getFilesystem()->delete($this->getFilePath($namespace, $key));
+        return $this->filesystem->delete($this->getFilePath($namespace, $key));
     }
 
     /**
