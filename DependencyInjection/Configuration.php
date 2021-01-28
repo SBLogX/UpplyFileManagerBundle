@@ -12,8 +12,9 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder('upply_file_manager');
         $treeBuilder->getRootNode()
             ->children()
-                ->scalarNode('blob_storage_url')->isRequired()->cannotBeEmpty()->end()
-                ->arrayNode('storage_dirnames')
+                ->scalarNode('adapter')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('azure_blob_url')->isRequired()->cannotBeEmpty()->end()
+                ->arrayNode('directories')
                     ->useAttributeAsKey('_name')
                     ->arrayPrototype()
                         ->children()

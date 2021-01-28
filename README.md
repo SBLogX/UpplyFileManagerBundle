@@ -33,41 +33,11 @@ Configuration
 Configure the `upply_file_manager.yaml` in your `config/packages` directory:
 ```yaml
 upply_file_manager:
-    blob_storage_url: '%env(BLOB_STORAGE_URL)%'
-    storage_dirnames:
+    adapter: local # or azure
+    azure_blob_url: '%env(BLOB_STORAGE_URL)%'
+    directories:
         client:
             name: 'client-files'
-
-knp_gaufrette:
-    adapters:
-        default:
-            local:
-                directory: '%kernel.project_dir%/fileshare'
-        azure:
-            azure_blob_storage:
-                blob_proxy_factory_id: azure_blob_proxy_factory
-                container_name: '%env(ENV)%'
-                create_container: false
-
-    stream_wrapper: ~
-```
-
-To choose which adapter to use add this under `knp_gaufrette` configuration:
-
-To use azure
-```yaml
-    filesystems:
-        upply:
-            adapter: azure
-            alias: upply_filesystem
-```
-
-To use default
-```yaml
-    filesystems:
-        upply:
-            adapter: default
-            alias: upply_filesystem
 ```
 
 How to use
@@ -90,5 +60,5 @@ $fileManager->delete('client', $relativeFilePath);
 
 In a controller, to return the file:
 ```php
-return new BinaryFileResponse($fileManager->getFilePath('client', $relativeFilePath, true));
+return new BinaryFileResponse($fileManager->getFileStreamPath('client', $relativeFilePath));
 ```
