@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('adapter')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('azure_blob_url')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('azure_container_name')->isRequired()->cannotBeEmpty()->end()
                 ->arrayNode('directories')
                     ->useAttributeAsKey('_name')
                     ->arrayPrototype()

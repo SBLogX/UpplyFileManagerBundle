@@ -39,8 +39,6 @@ class UpplyFileManagerExtension extends Extension implements PrependExtensionInt
             throw new \Exception('Bundle KnpGaufretteBundle must be enabled');
         }
 
-        $env = $container->getParameter('kernel.environment');
-
         $configs = $container->getExtensionConfig($this->getAlias());
 
         $container->prependExtensionConfig('knp_gaufrette', [
@@ -59,7 +57,7 @@ class UpplyFileManagerExtension extends Extension implements PrependExtensionInt
                 'azure' => [
                     'azure_blob_storage' => [
                         'blob_proxy_factory_id' => 'azure_blob_proxy_factory',
-                        'container_name' => $env,
+                        'container_name' => $configs[0]['azure_container_name'],
                         'create_container' => false,
                     ],
                 ],
