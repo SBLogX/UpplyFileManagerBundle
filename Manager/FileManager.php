@@ -200,6 +200,32 @@ class FileManager
     }
 
     /**
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function isDirectory(string $key): bool
+    {
+        return $this->filesystem->isDirectory($key);
+    }
+
+    /**
+     * Lists keys beginning with given prefix
+     * (no wildcard / regex matching).
+     *
+     * if adapter implements ListKeysAware interface, adapter's implementation will be used,
+     * in not, ALL keys will be requested and iterated through.
+     *
+     * @param string $prefix
+     *
+     * @return array
+     */
+    public function listKeys(string $prefix = ''): array
+    {
+        return $this->filesystem->listKeys($prefix);
+    }
+
+    /**
      * Slugify the given string.
      *
      * @param string $string
