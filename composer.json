@@ -11,11 +11,11 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^8.1",
         "ext-intl": "*",
-        "symfony/dependency-injection": "^4.0|^5.0",
-        "symfony/framework-bundle": "^4.0|^5.0",
-        "symfony/validator": "^4.0|^5.0",
+        "symfony/dependency-injection": "^6.1",
+        "symfony/framework-bundle": "^6.1",
+        "symfony/validator": "^6.1",
         "knplabs/knp-gaufrette-bundle": "^0.7.1",
         "microsoft/azure-storage-blob": "^1.5"
     },
