@@ -66,7 +66,7 @@ class UpplyFileManagerExtension extends Extension implements PrependExtensionInt
         ]);
     }
 
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'upply_file_manager';
     }
